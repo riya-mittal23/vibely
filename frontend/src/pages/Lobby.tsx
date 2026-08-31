@@ -8,7 +8,7 @@ import { Users, Copy } from 'lucide-react';
 
 export const Lobby: React.FC = () => {
   const navigate = useNavigate();
-  const { gameState, playerId, leaveRoom, changeTeam, startGame } = useMultiplayerStore();
+  const { gameState, playerId, leaveRoom, startGame } = useMultiplayerStore();
 
   useEffect(() => {
     if (!gameState) {
@@ -22,10 +22,6 @@ export const Lobby: React.FC = () => {
 
   const myPlayer = gameState.players.find(p => p.id === playerId);
   const isHost = myPlayer?.isHost || false;
-
-  const teamA = gameState.players.filter(p => p.teamId === 'TEAM_A');
-  const teamB = gameState.players.filter(p => p.teamId === 'TEAM_B');
-  const unassigned = gameState.players.filter(p => !p.teamId);
 
   return (
     <div className="flex-1 flex flex-col w-full max-w-4xl mx-auto p-6">

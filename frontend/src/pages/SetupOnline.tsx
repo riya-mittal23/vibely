@@ -12,8 +12,8 @@ export const SetupOnline: React.FC = () => {
   const [name, setName] = useState('');
   const [roomCode, setRoomCode] = useState('');
   const [rounds, setRounds] = useState(4);
-  const [gameMode, setGameMode] = useState<'TEAM' | 'FREE_FOR_ALL'>('TEAM');
-  const [vibe, setVibe] = useState<'CASUAL' | 'NORMAL' | 'CHAOTIC'>('NORMAL');
+  const [gameMode] = useState<'TEAM' | 'FREE_FOR_ALL'>('TEAM');
+  const [vibe] = useState<'CASUAL' | 'NORMAL' | 'CHAOTIC'>('NORMAL');
 
   // Automatically navigate to lobby once room is joined
   useEffect(() => {

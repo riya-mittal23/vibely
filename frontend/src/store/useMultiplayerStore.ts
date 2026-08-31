@@ -28,7 +28,7 @@ interface MultiplayerStore {
 
 export const useMultiplayerStore = create<MultiplayerStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       gameState: null,
   playerId: null,
   error: null,

@@ -107,29 +107,34 @@ export function useSocket() {
       });
     });
 
-    socket.on('game:revealed', (payload) => {
+    socket.on('game:revealed', (payload: any) => {
       useMultiplayerStore.setState((prev) => {
         if (prev.gameState && prev.gameState.currentRound) {
-          const newState = { ...prev.gameState };
-          newState.currentRound = {
-            ...newState.currentRound,
+          const currentRound = {
+            ...prev.gameState.currentRound,
             targetPosition: payload.targetPosition,
             targetWidth: payload.targetWidth,
             guessPosition: payload.guessPosition,
             roundScore: payload.score,
-            status: 'RESULT'
+            status: 'RESULT' as const
           };
 
-          // Also append to history
-          newState.roundHistory = [...newState.roundHistory, {
-            roundNumber: newState.currentRound.number,
-            spectrumId: newState.currentRound.spectrumId,
-            clue: newState.currentRound.clue || '',
-            targetPosition: payload.targetPosition,
-            guessPosition: payload.guessPosition,
-            distance: payload.distance,
-            score: payload.score
-          }];
+          const newState = {
+            ...prev.gameState,
+            currentRound,
+            roundHistory: [
+              ...prev.gameState.roundHistory,
+              {
+                roundNumber: currentRound.number,
+                spectrumId: currentRound.spectrumId,
+                clue: currentRound.clue || '',
+                targetPosition: payload.targetPosition || 0,
+                guessPosition: payload.guessPosition || 0,
+                distance: payload.distance || 0,
+                score: payload.score || 0
+              }
+            ]
+          };
 
           return { gameState: newState };
         }
