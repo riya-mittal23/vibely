@@ -12,8 +12,13 @@ export let io: SocketIOServer<ClientToServerEvents, ServerToClientEvents, InterS
 export function setupSocketIO(server: http.Server) {
   io = new SocketIOServer(server, {
     cors: {
-      origin: process.env.CLIENT_URL || '*',
-      methods: ['GET', 'POST']
+      origin: process.env.CLIENT_URL || [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'https://vibelyr.vercel.app'
+      ],
+      methods: ['GET', 'POST'],
+      credentials: true
     }
   });
 
