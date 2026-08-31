@@ -78,7 +78,7 @@ export function useSocket() {
       useMultiplayerStore.setState((prev) => {
         if (prev.gameState && prev.gameState.currentRound) {
           const newState = { ...prev.gameState };
-          newState.currentRound = { ...newState.currentRound, clue, status: 'GUESS' };
+          newState.currentRound = { ...prev.gameState.currentRound, clue, status: 'GUESS' as const };
           return { gameState: newState };
         }
         return prev;
@@ -89,7 +89,7 @@ export function useSocket() {
       useMultiplayerStore.setState((prev) => {
         if (prev.gameState && prev.gameState.currentRound) {
           const newState = { ...prev.gameState };
-          newState.currentRound = { ...newState.currentRound, guessPosition: position };
+          newState.currentRound = { ...prev.gameState.currentRound, guessPosition: position };
           return { gameState: newState };
         }
         return prev;
@@ -100,7 +100,7 @@ export function useSocket() {
       useMultiplayerStore.setState((prev) => {
         if (prev.gameState && prev.gameState.currentRound) {
           const newState = { ...prev.gameState };
-          newState.currentRound = { ...newState.currentRound, guessLocked: true, status: 'REVEAL' };
+          newState.currentRound = { ...prev.gameState.currentRound, guessLocked: true, status: 'REVEAL' as const };
           return { gameState: newState };
         }
         return prev;
