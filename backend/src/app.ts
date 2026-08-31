@@ -5,12 +5,19 @@ import { SPECTRUMS } from './game/spectrums.js';
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://vibelyr.vercel.app'
+];
+
+if (process.env.CLIENT_URL) {
+  allowedOrigins.push(process.env.CLIENT_URL);
+  allowedOrigins.push(process.env.CLIENT_URL.replace(/\/$/, ''));
+}
+
 app.use(cors({ 
-  origin: process.env.CLIENT_URL || [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://vibelyr.vercel.app'
-  ],
+  origin: allowedOrigins,
   credentials: true
 }));
 app.use(express.json());

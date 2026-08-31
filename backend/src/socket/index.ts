@@ -10,13 +10,20 @@ import { gameManager } from '../game/GameManager.js';
 export let io: SocketIOServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 
 export function setupSocketIO(server: http.Server) {
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://vibelyr.vercel.app'
+  ];
+
+  if (process.env.CLIENT_URL) {
+    allowedOrigins.push(process.env.CLIENT_URL);
+    allowedOrigins.push(process.env.CLIENT_URL.replace(/\/$/, ''));
+  }
+
   io = new SocketIOServer(server, {
     cors: {
-      origin: process.env.CLIENT_URL || [
-        'http://localhost:5173',
-        'http://localhost:3000',
-        'https://vibelyr.vercel.app'
-      ],
+      origin: allowedOrigins,
       methods: ['GET', 'POST'],
       credentials: true
     }
