@@ -12,6 +12,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <AppShell>
         <Routes>
+          {/* routes */}
           <Route path="/" element={<Home />} />
           <Route path="/online-setup" element={<SetupOnline />} />
           <Route path="/lobby" element={<Lobby />} />
