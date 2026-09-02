@@ -38,9 +38,40 @@ export function setupSocketIO(server: http.Server) {
 
     socket.on('disconnect', () => {
       console.log(`Client disconnected: ${socket.id}`);
-      // The room:leave handler logic is explicitly triggered by the client,
-      // but if they disconnect abruptly, we could handle it here or rely on the grace period logic described in Phase 2.
-      // For now we'll just log. Real implementation would mark `connected = false` and set a timeout to remove them.
+      
+      if (socket.data.roomId && socket.data.playerId) {
+        const room = gameManager.getRoom(socket.data.roomId);
+        if (room) {
+          const player = room.getPlayer(socket.data.playerId);
+          if (player) {
+            player.connected = false;
+            player.lastSeenAt = Date.now();
+            
+            // Broadcast state so others see the disconnect icon
+            import('./state.js').then(({ serializeGameStateForPlayer }) => {
+              const state = room.getState();
+              state.players.forEach((p: any) => {
+                if (p.connected && p.socketId) {
+                  io.to(p.socketId).emit('lobby:updated', serializeGameStateForPlayer(state, p.id));
+                  io.to(p.socketId).emit('game:state', serializeGameStateForPlayer(state, p.id));
+                }
+              });
+            });
+            
+            // If host disconnected, maybe assign a new host if anyone else is connected
+            if (player.isHost) {
+              const state = room.getState();
+              const nextHost = state.players.find(p => p.connected && p.id !== player.id);
+              if (nextHost) {
+                player.isHost = false;
+                nextHost.isHost = true;
+                state.hostPlayerId = nextHost.id;
+                io.to(state.id).emit('player:hostChanged', nextHost.id);
+              }
+            }
+          }
+        }
+      }
     });
   });
 

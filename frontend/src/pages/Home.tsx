@@ -32,8 +32,8 @@ export const Home: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="flex flex-col items-center justify-center gap-4 pt-8 max-w-sm mx-auto"
         >
-          <Button size="xl" onClick={() => navigate('/online-setup')} className="w-full">
-            PLAY WITH FRIENDS (ONLINE)
+          <Button size="xl" onClick={() => navigate('/online-setup')} className="w-full bg-primary/20 text-white border-primary hover:bg-primary/30">
+            PLAY VIBELY 2.0 (ONLINE)
           </Button>
           <Button variant="outline" size="md" onClick={() => navigate('/how-to-play')} className="w-full border-white/20 hover:bg-white/10 mt-4">
             HOW TO PLAY

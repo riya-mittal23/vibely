@@ -19,7 +19,8 @@ export class GameRoom {
       createdAt: Date.now(),
       lastActivityAt: Date.now(),
       roundHistory: [],
-      usedSpectrumIds: []
+      usedSpectrumIds: [],
+      run: null
     };
     
     this.engine = new GameEngine(this);

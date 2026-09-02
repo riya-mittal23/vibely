@@ -40,6 +40,7 @@ export function serializeGameStateForPlayer(state: GameRoomState, playerId: stri
     teams: state.teams,
     currentRound: clientRound,
     roundNumber: state.roundNumber,
-    roundHistory: state.roundHistory
+    roundHistory: state.roundHistory,
+    run: state.run
   };
 }

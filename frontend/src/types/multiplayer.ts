@@ -1,11 +1,49 @@
-export type RoomStatus = 'LOBBY' | 'STARTING' | 'PLAYING' | 'ROUND_RESULT' | 'GAME_OVER';
+export type RoomStatus =
+  | 'LOBBY'
+  | 'STARTING'
+  | 'LEVEL_INTRO'
+  | 'PLAYING'
+  | 'ROUND_RESULT'
+  | 'LEVEL_RESULT'
+  | 'GAME_OVER';
 export type GameMode = 'TEAM' | 'FREE_FOR_ALL';
 export type Vibe = 'CASUAL' | 'NORMAL' | 'CHAOTIC';
 
 export interface RoomSettings {
-  rounds: number;
   mode: GameMode;
-  vibe: Vibe;
+  genreId: string | null;
+}
+
+export type ModifierType = 'TIGHT_TARGET' | 'THREE_WORD_CLUE' | 'TIME_PRESSURE' | 'CAMPUS_BAN' | 'CORPORATE_BAN' | 'ACTOR_BAN' | 'COLOR_BAN';
+
+export interface LevelConfig {
+  levelNumber: number;
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD' | 'VERY_HARD' | 'MASTER';
+  passScore: number;
+  targetWidth: number;
+  timeLimit: number;
+  modifiers: ModifierType[];
+}
+
+export interface VibeContent {
+  id: string;
+  leftLabel: string;
+  rightLabel: string;
+  difficulty: number;
+}
+
+export interface Genre {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  levels: {
+    1: VibeContent[];
+    2: VibeContent[];
+    3: VibeContent[];
+    4: VibeContent[];
+    5: VibeContent[];
+  };
 }
 
 export interface Player {
@@ -71,4 +109,28 @@ export interface ClientGameState {
   currentRound: ClientRoundState | null;
   roundNumber: number;
   roundHistory: RoundHistoryItem[];
+  run: GameRun | null;
+}
+
+export interface GameRun {
+  runId: string;
+  genreId: string;
+  currentLevel: number;
+  highestLevelReached: number;
+  lives: number;
+  status: 'ACTIVE' | 'FAILED' | 'COMPLETED' | 'TEAM_LEFT';
+  totalScore: number;
+  levels: LevelResult[];
+}
+
+export interface LevelResult {
+  levelNumber: number;
+  score: number;
+  requiredScore: number;
+  status: 'CLEARED' | 'FAILED';
+  vibesAnswered: number;
+  perfectVibes: number;
+  stars: number;
+  startedAt: number;
+  completedAt: number;
 }

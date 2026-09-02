@@ -11,9 +11,7 @@ export const SetupOnline: React.FC = () => {
   const [mode, setMode] = useState<'CHOICE' | 'CREATE' | 'JOIN'>('CHOICE');
   const [name, setName] = useState('');
   const [roomCode, setRoomCode] = useState('');
-  const [rounds, setRounds] = useState(4);
   const [gameMode] = useState<'TEAM' | 'FREE_FOR_ALL'>('TEAM');
-  const [vibe] = useState<'CASUAL' | 'NORMAL' | 'CHAOTIC'>('NORMAL');
 
   // Automatically navigate to lobby once room is joined
   useEffect(() => {
@@ -58,25 +56,12 @@ export const SetupOnline: React.FC = () => {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-bold uppercase tracking-widest text-white/60 mb-2">Rounds</label>
-                <div className="flex gap-2">
-                  {[4, 8, 12].map(r => (
-                    <button
-                      key={r}
-                      onClick={() => setRounds(r)}
-                      className={`flex-1 py-2 rounded-lg font-bold ${rounds === r ? 'bg-primary text-white' : 'bg-white/5 border border-white/10'}`}
-                    >
-                      {r}
-                    </button>
-                  ))}
-                </div>
-              </div>
+
 
               <Button
                 size="lg"
                 disabled={name.trim().length < 2}
-                onClick={() => createRoom(name, { rounds, mode: gameMode, vibe })}
+                onClick={() => createRoom(name, { mode: gameMode, genreId: null })}
               >
                 START A LOBBY
               </Button>

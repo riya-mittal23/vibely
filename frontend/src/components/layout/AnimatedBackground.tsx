@@ -14,6 +14,12 @@ export const AnimatedBackground: React.FC = () => {
       <div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-primary/20 blur-[120px] animate-blob1 mix-blend-screen" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-secondary/15 blur-[150px] animate-blob2 mix-blend-screen" />
       <div className="absolute top-[20%] left-[30%] w-[50vw] h-[50vw] rounded-full bg-accent/20 blur-[100px] animate-blob3 mix-blend-screen" />
+      
+      {/* Twinkling and Shooting Stars */}
+      <div className="twinkle-stars absolute inset-0 opacity-50" />
+      <div className="shooting-star" />
+      <div className="shooting-star" />
+      <div className="shooting-star" />
     </div>
   );
 };

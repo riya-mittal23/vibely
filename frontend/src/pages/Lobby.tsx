@@ -8,12 +8,18 @@ import { Users, Copy } from 'lucide-react';
 
 export const Lobby: React.FC = () => {
   const navigate = useNavigate();
-  const { gameState, playerId, leaveRoom, startGame } = useMultiplayerStore();
+  const { gameState, playerId, leaveRoom, startGame, updateSettings } = useMultiplayerStore();
 
   useEffect(() => {
     if (!gameState) {
       navigate('/online-setup');
-    } else if (gameState.status === 'STARTING' || gameState.status === 'PLAYING') {
+    } else if (
+      gameState.status === 'STARTING' || 
+      gameState.status === 'PLAYING' || 
+      gameState.status === 'LEVEL_INTRO' ||
+      gameState.status === 'ROUND_RESULT' ||
+      gameState.status === 'LEVEL_RESULT'
+    ) {
       navigate('/online-game');
     }
   }, [gameState, navigate]);
@@ -44,38 +50,78 @@ export const Lobby: React.FC = () => {
           </Card>
 
           <Card className="p-6">
-            <h3 className="font-bold uppercase tracking-widest text-sm text-white/60 mb-4">Settings</h3>
-            <div className="flex flex-col gap-2 font-medium">
-              <div className="flex justify-between">
-                <span className="text-white/60">Mode</span>
-                <span>{gameState.settings.mode.replace('_', ' ')}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-white/60">Rounds</span>
-                <span>{gameState.settings.rounds}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-white/60">Vibe</span>
-                <span>{gameState.settings.vibe}</span>
+            <h3 className="font-bold uppercase tracking-widest text-sm text-white/60 mb-6 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              Game Settings
+            </h3>
+            
+            <div className="flex justify-between items-center mb-6 p-4 rounded-lg bg-white/5 border border-white/10">
+              <span className="text-white/60 font-medium">Mode</span>
+              <span className="font-bold tracking-wider text-white bg-white/10 px-3 py-1 rounded-full text-sm">
+                {gameState.settings.mode.replace('_', ' ')}
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <span className="text-white/60 text-sm font-medium mb-1">Select Theme</span>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {[
+                  { id: 'everyday', name: 'Everyday', icon: '🌎' },
+                  { id: 'college', name: 'College', icon: '🎓' },
+                  { id: 'school', name: 'School', icon: '🎒' },
+                  { id: 'work', name: 'Work', icon: '💼' },
+                  { id: 'spicy', name: 'Spicy', icon: '🌶️' },
+                  { id: 'entertainment', name: 'Media', icon: '🎬' },
+                ].map((genre) => {
+                  const isSelected = (gameState.settings.genreId || 'everyday') === genre.id;
+                  
+                  return (
+                    <motion.button
+                      key={genre.id}
+                      whileHover={isHost ? { scale: 1.05 } : {}}
+                      whileTap={isHost ? { scale: 0.95 } : {}}
+                      onClick={() => isHost && updateSettings({ genreId: genre.id })}
+                      className={`flex flex-col items-center justify-center p-4 rounded-xl border transition-all duration-300 ${
+                        isSelected 
+                          ? 'bg-gradient-to-b from-primary/30 to-primary/10 border-primary shadow-[0_0_15px_rgba(var(--color-primary),0.3)] scale-105' 
+                          : 'bg-white/5 border-white/10 opacity-70 hover:opacity-100 hover:bg-white/10'
+                      } ${!isHost && 'cursor-default'}`}
+                    >
+                      <span className="text-3xl mb-2 drop-shadow-md">{genre.icon}</span>
+                      <span className={`text-xs font-bold uppercase tracking-wider text-center leading-tight ${isSelected ? 'text-white' : 'text-white/70'}`}>
+                        {genre.name}
+                      </span>
+                      {isSelected && (
+                        <motion.div 
+                          layoutId="active-genre-indicator"
+                          className="absolute -inset-px border-2 border-primary rounded-xl"
+                          initial={false}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                        />
+                      )}
+                    </motion.button>
+                  );
+                })}
               </div>
             </div>
-            
+
             {isHost ? (
               <Button 
                 size="xl" 
-                className="w-full mt-8" 
+                className="w-full mt-8 relative overflow-hidden group" 
                 onClick={startGame}
                 disabled={gameState.players.length < 2}
               >
-                START GAME
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                <span className="relative font-bold tracking-widest">START GAME</span>
               </Button>
             ) : (
-              <div className="mt-8 text-center p-4 bg-white/5 rounded-lg border border-white/10 text-white/60 font-medium">
+              <div className="mt-8 text-center p-4 bg-primary/10 rounded-lg border border-primary/20 text-primary font-medium animate-pulse">
                 Waiting for host to start...
               </div>
             )}
             {gameState.players.length < 2 && isHost && (
-              <p className="text-xs text-center text-red-400 mt-2">Need at least 2 players</p>
+              <p className="text-xs text-center text-red-400 mt-3 font-medium">Need at least 2 players to start</p>
             )}
           </Card>
         </div>

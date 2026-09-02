@@ -6,7 +6,7 @@ export const GameHeader: React.FC = () => {
   const playerId = useMultiplayerStore((state) => state.playerId);
 
   const roundNumber = gameState?.roundNumber || 1;
-  const totalRounds = gameState?.settings?.rounds || 10;
+  const totalRounds = gameState?.run?.levels.find(l => l.levelNumber === gameState.run?.currentLevel)?.vibesAnswered || 0;
   
   const player = gameState?.players.find(p => p.id === playerId);
   const score = player?.score || 0;
