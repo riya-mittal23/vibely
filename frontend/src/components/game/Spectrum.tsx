@@ -92,8 +92,8 @@ export const Spectrum: React.FC<SpectrumProps> = ({
   const needleRotation = (guessPosition - 50) * (90 / 50);
 
   return (
-    <div className="w-full h-full min-h-0 flex flex-col items-center justify-center select-none touch-none overflow-visible">
-      <div className="w-full max-w-3xl flex flex-col items-center justify-center h-full min-h-0">
+    <div className="w-full flex-1 flex flex-col items-center justify-center select-none touch-none overflow-visible">
+      <div className="w-full max-w-3xl flex flex-col items-center justify-center flex-1 py-4">
         <svg
           ref={svgRef}
           viewBox="0 0 200 100"

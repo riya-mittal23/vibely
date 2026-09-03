@@ -18,17 +18,18 @@ export const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link to="/" className="text-2xl font-display font-bold tracking-tighter text-white" onClick={closeMenu}>
+            <Link to="/" className="flex items-center gap-2 text-2xl font-display font-bold tracking-tighter text-white" onClick={closeMenu}>
+              <img src="/vibely-logo.jpg" alt="Vibely Logo" className="w-12 h-12 rounded-full" />
               VIBELY
             </Link>
           </div>
-          
+
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {links.map((link) => (
-              <Link 
-                key={link.name} 
-                to={link.path} 
+              <Link
+                key={link.name}
+                to={link.path}
                 className={cn(
                   "text-sm font-medium transition-colors hover:text-white",
                   location.pathname === link.path ? "text-white" : "text-white/60"
@@ -41,8 +42,8 @@ export const Navbar: React.FC = () => {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center space-x-4">
-            <button 
-              onClick={() => setIsOpen(!isOpen)} 
+            <button
+              onClick={() => setIsOpen(!isOpen)}
               className="text-white/80 hover:text-white"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -55,9 +56,9 @@ export const Navbar: React.FC = () => {
       {isOpen && (
         <div className="md:hidden absolute top-16 left-0 w-full bg-background/95 backdrop-blur-xl border-b border-white/10 p-4 flex flex-col space-y-4">
           {links.map((link) => (
-            <Link 
-              key={link.name} 
-              to={link.path} 
+            <Link
+              key={link.name}
+              to={link.path}
               className={cn(
                 "block text-lg font-medium py-2 transition-colors",
                 location.pathname === link.path ? "text-white" : "text-white/60"

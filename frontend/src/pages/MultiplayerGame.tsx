@@ -251,7 +251,7 @@ export const MultiplayerGame: React.FC = () => {
   else roleMessage = "OPPOSING TEAM IS GUESSING";
 
   return (
-    <div className="flex-1 flex flex-col w-full max-w-5xl mx-auto pb-2 px-2 h-full min-h-0">
+    <div className="flex-1 flex flex-col w-full max-w-5xl mx-auto pb-2 px-2 min-h-full">
 
       {/* Premium HUD Header */}
       <div className="flex flex-col md:flex-row justify-between items-center w-full px-6 py-4 mb-4 rounded-3xl glass-panel shadow-2xl relative z-10 shrink-0 gap-4">
@@ -371,7 +371,7 @@ export const MultiplayerGame: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center w-full relative min-h-0">
+      <div className="flex-1 flex flex-col items-center justify-center w-full relative">
         <AnimatePresence mode="wait">
 
           {/* CLUE PHASE */}
@@ -381,9 +381,9 @@ export const MultiplayerGame: React.FC = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="w-full h-full flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 min-h-0"
+              className="w-full flex-1 flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 py-4"
             >
-              <div className="w-full lg:w-3/5 flex-1 min-h-0 flex items-center justify-center">
+              <div className="w-full lg:w-3/5 flex-1 flex items-center justify-center">
                 <Spectrum
                   leftLabel={round.leftLabel}
                   rightLabel={round.rightLabel}
@@ -455,9 +455,9 @@ export const MultiplayerGame: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="w-full h-full flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 min-h-0"
+              className="w-full flex-1 flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 py-4"
             >
-              <div className="w-full lg:w-3/5 flex-1 min-h-0 flex items-center justify-center">
+              <div className="w-full lg:w-3/5 flex-1 flex items-center justify-center">
                 <Spectrum
                   leftLabel={round.leftLabel}
                   rightLabel={round.rightLabel}
@@ -497,9 +497,9 @@ export const MultiplayerGame: React.FC = () => {
               key="result"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="w-full h-full flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 min-h-0"
+              className="w-full flex-1 flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 py-4"
             >
-              <div className="w-full lg:w-3/5 flex-1 min-h-0 flex items-center justify-center">
+              <div className="w-full lg:w-3/5 flex-1 flex items-center justify-center">
                 <Spectrum
                   leftLabel={round.leftLabel}
                   rightLabel={round.rightLabel}
