@@ -7,9 +7,9 @@ import { motion } from 'framer-motion';
 
 export const HowToPlay: React.FC = () => {
   const navigate = useNavigate();
-  
+
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="flex-1 flex flex-col items-center py-12 px-4"
@@ -17,7 +17,7 @@ export const HowToPlay: React.FC = () => {
       <h1 className="text-4xl sm:text-5xl font-display font-bold mb-12 uppercase tracking-widest text-center">
         How To Play
       </h1>
-      
+
       <div className="w-full max-w-4xl space-y-8 mb-12">
         <Card className="flex flex-col sm:flex-row gap-6 items-center p-8">
           <div className="w-16 h-16 shrink-0 rounded-full bg-primary/20 flex items-center justify-center">
@@ -56,7 +56,7 @@ export const HowToPlay: React.FC = () => {
         </Card>
       </div>
 
-      <Button size="xl" onClick={() => navigate('/play')} className="px-12">
+      <Button size="xl" onClick={() => navigate('/online-setup')} className="px-12">
         GOT IT, LET'S PLAY
       </Button>
     </motion.div>
