@@ -20,7 +20,7 @@ export const MultiplayerGame: React.FC = () => {
       const interval = setInterval(() => {
         const remaining = Math.max(0, Math.ceil((gameState.currentRound!.deadlineAt! - Date.now()) / 1000));
         setTimeLeft(remaining);
-        
+
         if (remaining === 0) {
           const isGuessController = gameState.currentRound?.guessControllerId === playerId;
           if (isGuessController && !gameState.currentRound?.guessLocked) {
@@ -29,10 +29,10 @@ export const MultiplayerGame: React.FC = () => {
           clearInterval(interval);
         }
       }, 250);
-      
+
       // Initial set
       setTimeLeft(Math.max(0, Math.ceil((gameState.currentRound.deadlineAt - Date.now()) / 1000)));
-      
+
       return () => clearInterval(interval);
     } else {
       setTimeLeft(null);
@@ -68,14 +68,14 @@ export const MultiplayerGame: React.FC = () => {
   if (gameState.status === 'LEVEL_INTRO' && gameState.run) {
     const isHost = gameState.hostPlayerId === playerId;
     const config = LEVEL_CONFIGS[gameState.run.currentLevel];
-    
+
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-6 w-full max-w-md mx-auto">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
           <Card className="p-8 text-center bg-black/40 border-primary/50 relative overflow-hidden">
             <h2 className="text-sm font-bold text-white/50 mb-2 uppercase tracking-widest">LEVEL {gameState.run.currentLevel}</h2>
             <h3 className="text-3xl font-display font-bold text-white mb-6 uppercase">{gameState.run.genreId}</h3>
-            
+
             <div className="space-y-4 mb-8 text-left">
               <div className="flex justify-between border-b border-white/10 pb-2">
                 <span className="text-white/60">Vibes:</span>
@@ -111,7 +111,7 @@ export const MultiplayerGame: React.FC = () => {
   if (gameState.status === 'LEVEL_RESULT' && gameState.run) {
     const isHost = gameState.hostPlayerId === playerId;
     const currentLvlResult = gameState.run.levels[gameState.run.levels.length - 1];
-    
+
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-6 w-full max-w-md mx-auto">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
@@ -119,15 +119,15 @@ export const MultiplayerGame: React.FC = () => {
             <h2 className="text-sm font-bold text-white/50 mb-2 uppercase tracking-widest">
               LEVEL {gameState.run.currentLevel} {currentLvlResult?.status === 'CLEARED' ? 'COMPLETE' : 'FAILED'}
             </h2>
-            
+
             <div className="text-6xl mb-6">
               {currentLvlResult?.status === 'CLEARED' ? '🎉' : '💀'}
             </div>
-            
+
             <h3 className={`text-4xl font-display font-bold mb-8 uppercase ${currentLvlResult?.status === 'CLEARED' ? 'text-green-400' : 'text-red-400'}`}>
               {currentLvlResult?.status}
             </h3>
-            
+
             <div className="flex justify-center gap-2 mb-8">
               {[1, 2, 3].map(star => (
                 <span key={star} className={`text-4xl ${currentLvlResult && currentLvlResult.stars >= star ? 'text-yellow-400' : 'text-white/20'}`}>
@@ -136,7 +136,7 @@ export const MultiplayerGame: React.FC = () => {
               ))}
             </div>
 
-            <div className="space-y-4 mb-8">
+            <div className="space-y-2 mb-4">
               <div className="flex justify-between border-b border-white/10 pb-2">
                 <span className="text-white/60">Score:</span>
                 <span className="font-bold">{currentLvlResult?.score} / {currentLvlResult?.requiredScore}</span>
@@ -155,8 +155,8 @@ export const MultiplayerGame: React.FC = () => {
 
             {isHost ? (
               <Button size="xl" className="w-full" onClick={() => nextRound()}>
-                {currentLvlResult?.status === 'CLEARED' 
-                  ? (gameState.run.currentLevel === 5 ? 'FINISH GAME' : 'NEXT LEVEL') 
+                {currentLvlResult?.status === 'CLEARED'
+                  ? (gameState.run.currentLevel === 5 ? 'FINISH GAME' : 'NEXT LEVEL')
                   : (gameState.run.lives > 0 ? 'RETRY LEVEL' : 'END GAME')}
               </Button>
             ) : (
@@ -175,7 +175,7 @@ export const MultiplayerGame: React.FC = () => {
   // Host leaving or game ended
   if (!round && gameState.status === 'GAME_OVER') {
     const isMaster = gameState.run?.status === 'COMPLETED';
-    
+
     return (
       <div className="flex-1 flex flex-col items-center justify-center py-20">
         <h2 className="text-4xl font-bold mb-2 text-primary tracking-widest uppercase">
@@ -255,7 +255,7 @@ export const MultiplayerGame: React.FC = () => {
 
       {/* Premium HUD Header */}
       <div className="flex flex-col md:flex-row justify-between items-center w-full px-6 py-4 mb-4 rounded-3xl glass-panel shadow-2xl relative z-10 shrink-0 gap-4">
-        
+
         {/* Left Side: Progress HUD */}
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 w-full md:w-auto">
           {/* Level Badge */}
@@ -285,9 +285,9 @@ export const MultiplayerGame: React.FC = () => {
           {/* Lives */}
           {gameState.run && (
             <div className={`flex items-center gap-3 px-4 py-2 rounded-2xl shadow-inner transition-colors border ${gameState.run.lives <= 3 ? 'bg-red-500/10 border-red-500/30' : 'bg-black/20 border-white/10'}`}>
-              <Heart 
-                className={`w-5 h-5 ${gameState.run.lives <= 3 ? 'text-red-400 animate-pulse' : 'text-green-400 opacity-80'}`} 
-                fill={gameState.run.lives <= 3 ? '#f87171' : 'currentColor'} 
+              <Heart
+                className={`w-5 h-5 ${gameState.run.lives <= 3 ? 'text-red-400 animate-pulse' : 'text-green-400 opacity-80'}`}
+                fill={gameState.run.lives <= 3 ? '#f87171' : 'currentColor'}
               />
               <div className="flex flex-col text-left">
                 <span className="text-[9px] text-white/50 uppercase tracking-widest font-bold leading-none mb-1">Lives</span>
@@ -301,7 +301,7 @@ export const MultiplayerGame: React.FC = () => {
 
         {/* Right Side: Mode-Specific HUD */}
         <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 w-full md:w-auto">
-          
+
           {/* Timer */}
           {round.deadlineAt && timeLeft !== null && (
             <div className={`flex items-center gap-3 px-4 py-2 rounded-2xl shadow-inner border transition-colors ${timeLeft <= 5 ? 'bg-red-500/20 border-red-500/50 animate-pulse shadow-[0_0_20px_rgba(239,68,68,0.3)]' : 'bg-black/20 border-white/10'}`}>
@@ -334,13 +334,13 @@ export const MultiplayerGame: React.FC = () => {
               <div className="flex flex-col text-left">
                 <span className="text-[9px] text-white/50 uppercase tracking-widest font-bold leading-none mb-1">Level Score</span>
                 <span className="text-sm font-bold text-white leading-none">
-                  {gameState.run.levels[gameState.run.levels.length - 1]?.score || 0} 
+                  {gameState.run.levels[gameState.run.levels.length - 1]?.score || 0}
                   <span className="text-white/30 text-xs ml-1 font-normal">/ {LEVEL_CONFIGS[gameState.run.currentLevel]?.passScore}</span>
                 </span>
               </div>
             </div>
           ) : null}
-          
+
         </div>
       </div>
 
@@ -358,7 +358,7 @@ export const MultiplayerGame: React.FC = () => {
             ))}
           </div>
         )}
-        
+
         <div className="flex flex-wrap justify-center gap-3">
           {gameState.settings.mode === 'TEAM' && myTeamName && (
             <div className="px-5 py-1.5 rounded-full bg-black/40 border border-white/10 text-white/80 font-bold text-[11px] tracking-widest uppercase backdrop-blur-md">
