@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RefreshCw, Heart, Clock, Target, Trophy, Swords, Zap } from 'lucide-react';
+import { RefreshCw, Heart, Clock, Target, Trophy, Swords, Zap, LogOut } from 'lucide-react';
 import { useMultiplayerStore } from '../store/useMultiplayerStore';
 import { Spectrum } from '../components/game/Spectrum';
 import { Card } from '../components/common/Card';
@@ -341,6 +341,18 @@ export const MultiplayerGame: React.FC = () => {
             </div>
           ) : null}
 
+          {/* Leave Room Button */}
+          <button
+            onClick={() => {
+              if (window.confirm("Are you sure you want to leave the room?")) {
+                leaveRoom();
+              }
+            }}
+            className="flex items-center justify-center w-10 h-10 ml-2 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/30 border border-red-500/30 transition-colors"
+            title="Leave Room"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
         </div>
       </div>
 
