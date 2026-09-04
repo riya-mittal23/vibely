@@ -236,33 +236,25 @@ export const MultiplayerGame: React.FC = () => {
   const isClueGiver = round.clueGiverId === playerId;
   const isGuessController = round.guessControllerId === playerId;
   const myTeamId = gameState.players.find(p => p.id === playerId)?.teamId;
-  const myTeamName = gameState.teams.find(t => t.id === myTeamId)?.name;
   const isMyTeamGuessing = round.guessingTeamId === myTeamId;
 
   const targetWidth = round.targetWidth || 14;
   const targetPosition = round.targetPosition !== undefined ? round.targetPosition : 50;
   const showTarget = isClueGiver || round.status === 'REVEAL' || round.status === 'RESULT';
 
-  // Build role message
-  let roleMessage = "";
-  if (isClueGiver) roleMessage = "YOU ARE THE CLUE GIVER";
-  else if (isGuessController) roleMessage = "YOU CONTROL THE GUESS";
-  else if (isMyTeamGuessing) roleMessage = "YOUR TEAM IS GUESSING";
-  else roleMessage = "OPPOSING TEAM IS GUESSING";
-
   return (
     <div className="flex-1 flex flex-col w-full max-w-5xl mx-auto pb-2 px-2 min-h-full">
 
       {/* Premium HUD Header */}
-      <div className="flex flex-col md:flex-row justify-between items-center w-full px-6 py-4 mb-4 rounded-3xl glass-panel shadow-2xl relative z-10 shrink-0 gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-center w-full px-0 py-2 mb-2 rounded-3xl glass-panel shadow-2xl relative z-10 shrink-0 gap-2">
 
         {/* Left Side: Progress HUD */}
-        <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 w-full md:w-auto">
+        <div className="flex flex-wrap items-center justify-center md:justify-start gap-1 w-full md:w-auto">
           {/* Level Badge */}
-          <div className="flex items-center gap-3 bg-black/20 border border-white/10 px-4 py-2 rounded-2xl shadow-inner">
-            <Trophy className="text-primary w-5 h-5 opacity-80" />
+          <div className="flex items-center gap-3 bg-black/20 border border-white/10 px-2 py-2 rounded-2xl shadow-inner">
+            <Trophy className="text-primary w-4 h-4 opacity-80" />
             <div className="flex flex-col text-left">
-              <span className="text-[9px] text-white/50 uppercase tracking-widest font-bold leading-none mb-1">Current</span>
+              {/* <span className="text-[9px] text-white/50 uppercase tracking-widest font-bold leading-none mb-1">Current</span> */}
               <span className="text-sm font-bold text-white leading-none">
                 {gameState.run ? `Level ${gameState.run.currentLevel}` : `Round ${round.number}`}
               </span>
@@ -271,10 +263,10 @@ export const MultiplayerGame: React.FC = () => {
 
           {/* Vibe Progress */}
           {gameState.run && (
-            <div className="flex items-center gap-3 bg-black/20 border border-white/10 px-4 py-2 rounded-2xl shadow-inner">
-              <Target className="text-secondary w-5 h-5 opacity-80" />
+            <div className="flex items-center gap-2 bg-black/20 border border-white/10 px-2 py-2 rounded-2xl shadow-inner">
+              <Target className="text-secondary w-4 h-4 opacity-80" />
               <div className="flex flex-col text-left">
-                <span className="text-[9px] text-white/50 uppercase tracking-widest font-bold leading-none mb-1">Vibes</span>
+                {/* <span className="text-[9px] text-white/50 uppercase tracking-widest font-bold leading-none mb-1">Vibes</span> */}
                 <span className="text-sm font-bold text-white leading-none">
                   {gameState.run.levels[gameState.run.levels.length - 1]?.vibesAnswered || 0} <span className="text-white/40">/ 10</span>
                 </span>
@@ -284,13 +276,13 @@ export const MultiplayerGame: React.FC = () => {
 
           {/* Lives */}
           {gameState.run && (
-            <div className={`flex items-center gap-3 px-4 py-2 rounded-2xl shadow-inner transition-colors border ${gameState.run.lives <= 3 ? 'bg-red-500/10 border-red-500/30' : 'bg-black/20 border-white/10'}`}>
+            <div className={`flex items-center gap-2 px-2 py-2 rounded-2xl shadow-inner transition-colors border ${gameState.run.lives <= 3 ? 'bg-red-500/10 border-red-500/30' : 'bg-black/20 border-white/10'}`}>
               <Heart
-                className={`w-5 h-5 ${gameState.run.lives <= 3 ? 'text-red-400 animate-pulse' : 'text-green-400 opacity-80'}`}
+                className={`w-4 h-4 ${gameState.run.lives <= 3 ? 'text-red-400 animate-pulse' : 'text-green-400 opacity-80'}`}
                 fill={gameState.run.lives <= 3 ? '#f87171' : 'currentColor'}
               />
               <div className="flex flex-col text-left">
-                <span className="text-[9px] text-white/50 uppercase tracking-widest font-bold leading-none mb-1">Lives</span>
+                {/* <span className="text-[9px] text-white/50 uppercase tracking-widest font-bold leading-none mb-1">Lives</span> */}
                 <span className={`text-sm font-bold leading-none ${gameState.run.lives <= 3 ? 'text-red-400' : 'text-green-400'}`}>
                   {gameState.run.lives}
                 </span>
@@ -300,30 +292,18 @@ export const MultiplayerGame: React.FC = () => {
         </div>
 
         {/* Right Side: Mode-Specific HUD */}
-        <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 w-full md:w-auto">
+        <div className="flex flex-wrap items-center justify-center md:justify-end gap-2 w-full md:w-auto">
 
-          {/* Timer */}
-          {round.deadlineAt && timeLeft !== null && (
-            <div className={`flex items-center gap-3 px-4 py-2 rounded-2xl shadow-inner border transition-colors ${timeLeft <= 5 ? 'bg-red-500/20 border-red-500/50 animate-pulse shadow-[0_0_20px_rgba(239,68,68,0.3)]' : 'bg-black/20 border-white/10'}`}>
-              <Clock className={`w-5 h-5 ${timeLeft <= 5 ? 'text-red-400' : 'text-white/60'}`} />
-              <div className="flex flex-col text-left">
-                <span className={`text-[9px] uppercase tracking-widest font-bold leading-none mb-1 ${timeLeft <= 5 ? 'text-red-400/80' : 'text-white/50'}`}>Time Left</span>
-                <span className={`text-lg font-display font-bold leading-none ${timeLeft <= 5 ? 'text-red-400' : 'text-white'}`}>
-                  {timeLeft}s
-                </span>
-              </div>
-            </div>
-          )}
 
           {/* Teams or FFA Score */}
           {gameState.settings.mode === 'TEAM' ? (
             <div className="flex items-center bg-black/30 border border-white/10 p-1 rounded-2xl shadow-inner">
-              <div className="flex flex-col items-center px-4 py-1.5 rounded-xl">
+              <div className={`flex flex-col items-center px-4 py-1.5 rounded-xl transition-colors ${myTeamId === gameState.teams[0].id ? 'bg-white/10 ring-1 ring-white/20 shadow-sm' : ''}`}>
                 <span className="text-[9px] text-secondary font-bold uppercase tracking-widest mb-1">{gameState.teams[0].name}</span>
                 <span className="text-xl font-display font-bold text-white leading-none">{gameState.teams[0].score}</span>
               </div>
               <div className="px-1 text-white/20"><Swords className="w-5 h-5" /></div>
-              <div className="flex flex-col items-center px-4 py-1.5 rounded-xl">
+              <div className={`flex flex-col items-center px-4 py-1.5 rounded-xl transition-colors ${myTeamId === gameState.teams[1].id ? 'bg-white/10 ring-1 ring-white/20 shadow-sm' : ''}`}>
                 <span className="text-[9px] text-accent font-bold uppercase tracking-widest mb-1">{gameState.teams[1].name}</span>
                 <span className="text-xl font-display font-bold text-white leading-none">{gameState.teams[1].score}</span>
               </div>
@@ -371,16 +351,6 @@ export const MultiplayerGame: React.FC = () => {
           </div>
         )}
 
-        <div className="flex flex-wrap justify-center gap-3">
-          {gameState.settings.mode === 'TEAM' && myTeamName && (
-            <div className="px-5 py-1.5 rounded-full bg-black/40 border border-white/10 text-white/80 font-bold text-[11px] tracking-widest uppercase backdrop-blur-md">
-              Team <span className={myTeamId === gameState.teams[0].id ? 'text-secondary' : 'text-accent'}>{myTeamName}</span>
-            </div>
-          )}
-          <div className="px-5 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary font-bold text-[11px] tracking-widest uppercase shadow-[0_0_15px_rgba(168,85,247,0.2)] backdrop-blur-md">
-            {roleMessage}
-          </div>
-        </div>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center w-full relative">
@@ -469,7 +439,18 @@ export const MultiplayerGame: React.FC = () => {
               exit={{ opacity: 0 }}
               className="w-full flex-1 flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 py-4"
             >
-              <div className="w-full lg:w-3/5 flex-1 flex items-center justify-center">
+              <div className="w-full lg:w-3/5 flex-1 flex items-center justify-center relative">
+                {round.deadlineAt && timeLeft !== null && (
+                  <div className={`absolute top-0 right-4 z-10 flex items-center gap-2 px-2 py-2 rounded-2xl shadow-inner border transition-colors ${timeLeft <= 5 ? 'bg-red-500/20 border-red-500/50 animate-pulse shadow-[0_0_20px_rgba(239,68,68,0.3)]' : 'bg-black/20 border-white/10'}`}>
+                    <Clock className={`w-4 h-4 ${timeLeft <= 5 ? 'text-red-400' : 'text-white/60'}`} />
+                    <div className="flex flex-col text-left">
+                      {/* <span className={`text-[9px] uppercase tracking-widest font-bold leading-none mb-1 ${timeLeft <= 5 ? 'text-red-400/80' : 'text-white/50'}`}>Time Left</span> */}
+                      <span className={`text-lg font-display font-bold leading-none ${timeLeft <= 5 ? 'text-red-400' : 'text-white'}`}>
+                        {timeLeft}s
+                      </span>
+                    </div>
+                  </div>
+                )}
                 <Spectrum
                   leftLabel={round.leftLabel}
                   rightLabel={round.rightLabel}
